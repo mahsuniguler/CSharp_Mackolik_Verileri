@@ -6,6 +6,7 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -69,21 +70,21 @@ namespace iddaaAnalizProjesi
 
 
             int dosyaNumarasi = 0;
-            string excelDosyaAdi = $"C:/Users/Mahsuni/Desktop/Analiz/veriler{dosyaNumarasi}.xlsx";
+            string excelDosyaAdi = $"C:/Users/Mahsuni/Desktop/Analiz/Mackolik_verileri{dosyaNumarasi}.xlsx";
 
 
             // Dosya adının varlığını ve kullanılabilirliğini kontrol edin.
             while (File.Exists(excelDosyaAdi))
             {
                 dosyaNumarasi++;
-                excelDosyaAdi = $"C:/Users/Mahsuni/Desktop/Analiz/veriler{dosyaNumarasi}.xlsx";
+                excelDosyaAdi = $"C:/Users/Mahsuni/Desktop/Analiz/Mackolik_verileri{dosyaNumarasi}.xlsx";
 
             }
             
             DateTime bugununTarihi = DateTime.Now;
             string bugununTarihistr = bugununTarihi.ToString("dd.MM.yyyy");
             OfficeOpenXml.ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            string excelDosyaYolu = excelDosyaAdi;
+            
 
             using (OfficeOpenXml.ExcelPackage package = new OfficeOpenXml.ExcelPackage(new FileInfo(excelDosyaAdi)))
             {
@@ -136,6 +137,16 @@ namespace iddaaAnalizProjesi
             }
 
             driver.Quit();
+
+            try
+            {
+                // Excel dosyasını aç
+                Process.Start(excelDosyaAdi);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Excel dosyasını açma hatası: " + ex.Message);
+            }
         }
     }
 }
